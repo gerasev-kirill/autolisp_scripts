@@ -73,5 +73,10 @@ gk_nc31_dialog : dialog {
 		}
 
 	ok_cancel;
+//	:button{
+//		label = "HAHAHHA";
+//		key = "b_ok";
+//		is_default=true;
+//		}
 	}
 }

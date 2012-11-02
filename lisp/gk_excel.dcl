@@ -1,5 +1,7 @@
 number_cp : dialog {
  label = "Параметры...";
+//		fixed_width=true;
+//		fixed_height=true;
 		alignment = left;
 		fixed_width = true;
 	:column{

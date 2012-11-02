@@ -1,19 +1,18 @@
 ;
 ;###################################################################################
-;	AutoLisp
+;	AutoCAD 2007 + AutoLISP + Visual LISP
 ;	Модуль для программ
 ;	Перебор точек, сохранение в таблицы, сохранение в файлы и т.д.
 ;	Для токарных станков с повернутой системой координат X/2-Z.
-;	Для обычных координат с НЕ повернутыми координатами X-Z.
+;	Для обычных координат с НЕ повернутыми координатами X-Z
 ;###################################################################################
 ;	Переменная для опеределения расположения координатных осей:
 ;	acad_asix = {	
-;			"x/2-z" 	- для токарных станков		
-;			"x-z"		-  для фрезерных и остальных
-;			}
+;							"x/2-z" 	- для токарных станков		
+;							"x-z"		-  для фрезерных и остальных
+;							}
 ;###################################################################################
 ;	Герасев Кирилл
-;	gerasev.kirill@gmail.com
 ;	25/04/2012
 ;###################################################################################
 ;		 ФУНКЦИИ МОДУЛЯ:
@@ -31,8 +30,6 @@
 ;###################################################################################
 ; общее для всех программ
 ;
-
-;;;;;;;;;;;;;;;; взято с одного из форумов
 (defun min1(f)
  (cond 
   ((null f) nil)
@@ -64,7 +61,7 @@
   )
 )
 
-;;;;;;;;;;;;;;;;;;
+
 
 (defun real_X_Y(coord acad_axis / _realX _realY _res) ; возвращение списка с реальными координатами
 	(if (= acad_axis "x/2-z")
@@ -81,7 +78,7 @@
 )
 
 (defun find_real_coord (list_of_coord  acad_axis /  ; найти реальные координаты для чертежа
-							_res  _tmp  _realX  _realY) 
+												_res  _tmp  _realX  _realY) 
 	(if (= acad_axis "x/2-z");если токарный станок, то
 		(progn
 			(setq	_res NIL)
@@ -90,7 +87,9 @@
 				(setq _realX (* -1 _realX))
 				(setq _realY (car _tmp))
 				(if (> (LENGTH _tmp) 2)
-					(setq _res ( append _res (list (list _realX _realY (nth 2 _tmp)))))
+					(progn
+						(setq _res ( append _res (list (list _realX _realY (nth 2 _tmp)))))
+					)
 					(setq _res ( append _res (list (list _realX _realY))))
 				)
 			)
@@ -110,7 +109,6 @@
 )
 
 (defun mk_difference (list_of_coord / _dif  _last_coord  _X  _Y _tmp_coord) ; определение  относительных координат
-	; на входе список координат
 	(setq	_dif NIL)
 	; считается относительно 1 точки в списке
 	(setq _last_coord (car list_of_coord))
@@ -119,8 +117,10 @@
 		(setq _Y ( - (nth 1 _tmp) (nth 1 _last_coord) ))
 		(setq _last_coord _tmp)
 		(if (> (LENGTH _tmp) 2)
+			(progn 
 				; для дуг
-			(setq _dif ( append _dif (list (list _X _Y (nth 2 _tmp)))))
+				(setq _dif ( append _dif (list (list _X _Y (nth 2 _tmp)))))
+			)
 			(setq _dif ( append _dif (list (list _X _Y))))
 		)
 	)
@@ -132,7 +132,7 @@
 	(while ( <  (+ _n 3) (LENGTH object)); полилиния
 		(setq _tmp (nth _n object))
 		(if (= ( car _tmp) 10 )  
-			(progn;;;;;;;;;;;;;;;;;
+			(progn
 				(if (/= (cdr (nth (+ _n 3) object )) 0 )
 					(setq _lst_point (append _lst_point (list ( list (round (nth 1 _tmp) 3)  (round (nth 2 _tmp)  3) (cdr (nth (+ _n 3) object ))	))))
 					(setq _lst_point (append _lst_point (list ( list (round (nth 1 _tmp)  3) (round (nth 2 _tmp) 3)))))
@@ -156,9 +156,8 @@
 	(setq _res _lst_point)
 )
 
-;;;;;;;;;;;;;;;;; взято с одного из форумов
 (defun bubltoarc (pt1 pt2 bubl / dst cnt r); переводит представление дуги из polyline в arc.
-  ;начальная точка, конечная, значение 42 группы
+  ;начальная _point, конечная, значение 42 группы
 	(setq 	dst (distance pt1 pt2)
 		r	(+ (* (/ dst 2.0) bubl) (/ (- (* (/ dst 2.0) (/ dst 2.0))
 			(* (/ (* dst bubl) 2.0) (/ (* dst bubl) 2.0))) (* dst bubl)))
@@ -168,10 +167,8 @@
 			(- (* (/ dst 2.0) bubl) r))
 	);end of setq
 	(list cnt r (angle cnt pt1) (angle cnt pt2))
-  ; на выходе:
-  ; точки центра дуги, радиус, начального угла дуги, конечного угла дуги
+  ;точки центра дуги, радиус, начального угла дуги, конечного угла дуги
 )
-;;;;;;;;;;;;;;;;;
 
 (defun get_current_layer( / _res)
 	(setq _res (getvar "CLAYER" ))
@@ -191,18 +188,22 @@
 )
 
 (defun copy_to_layer (layer_name weigth /  _material _weigth _res ); сопирование из слоя текущего в слой с именем layer_name
-	; FiXME конечно нужно переписать по другому
 	(setq _material (ssget "_w" (list  -200  -200) (list  200 200)))
 	(command "_copytolayer" _material "" layer_name (list 0 0) (list 0 weigth))
 	(princ)
 )
 
-(defun get_date ( / d yr mo day) ; получение даты.
-     (setq date (rtos (getvar "CDATE") 2 6)
-     (setq year (substr date 3 2))
-     (setq months (substr date 5 2)
-     (setq day (substr d 7 2)))
-     (strcat day "." months "." year)
+(defun get_date ( / d yr mo day) ; получение даты
+     (setq d (rtos (getvar "CDATE") 2 6)
+	 
+          yr (substr d 3 2)
+		  
+          mo (substr d 5 2)
+		  
+         day (substr d 7 2)
+		 
+     )
+     (strcat day "." mo "." yr)
 )
 
 (defun get_all_info( / _operation _modification _name   _full_path _res _res1)
@@ -247,15 +248,16 @@
 )
 
 (defun get_layers_names( / _ln  _layers _res)
+	
 	(vl-load-com)
 	(vlax-for layer (vla-get-layers (vla-get-activedocument (vlax-get-acad-object)))
-	(vl-catch-all-apply
-	      (function
-		(lambda ()
-		  (setq _ln (vla-get-name layer))
-		)
-	      )
-	)
+    (vl-catch-all-apply
+      (function
+        (lambda ()
+          (setq _ln (vla-get-name layer))
+        )
+      )
+    )
 	; в списке возвращается все слои кроме  Defpoints и 0
 	(if (not (or (equal _ln "Defpoints") (equal  _ln "0")))
 		(setq _layers (append _layers (list _ln)))
@@ -271,14 +273,14 @@
 (defun debug (text debug_info) ; вывод отладочной информации
 	(princ "\n")
 	(princ text)
-	(princ " : ")
+	(princ " ")
 	(princ debug_info)
 	(princ "\n")
 )
 
-(defun draw_all(_lst_point index  acad_axis /  _rev_order _res _sys_var); отрисовка номеров и точек из списка координат
-	; список координат, индекс с которого необходимо начать нумерацию, оси.
-	; 
+(defun draw_all(_lst_point index  acad_axis /  _rev_order _res _sys_var)
+	; отрисовка точек . прямой и обратный порядок
+	
 	(setq _sys_var (mapcar 'getvar '("osmode" "cmdecho")))
 	(setvar "osmode" 0)
 	(setvar "cmdecho" 0)
@@ -310,13 +312,10 @@
 )
 
 (defun draw_point_and_text (list_of_coord  acad_axis  index / _n  _undo_tmp _angle_of_text)
-	; отрисовка номеров и точек из списка координат
-	; список координат, индекс с которого необходимо начать нумерацию, оси.
-	; 
 	(vla-startundomark
 		(setq _undo_tmp (vla-get-activedocument (vlax-get-acad-object)))
-    ) ; маркер вложенности отмены
-	;FIXME: на bricscad (12 под Linux) не работает=(
+    ) 
+	; на bricscad не работает=(
 	
 	(setq _n index)
 	(command "_color" GK_COLOR)
@@ -325,16 +324,14 @@
 		(setq _angle_of_text 0)
 	)
 	(foreach _tmp list_of_coord
-		(command "ТОЧКА" (list (car _tmp) (nth 1 _tmp)))
-		; FIXME:расставлять _text на расстоянии в соответствии с стилем.
+		(command "_point" (list (car _tmp) (nth 1 _tmp)))
+		; FIXME:		расставлять _text на расстоянии в соответствии с стилем.
 		(command "_text" (polar (list (car _tmp) (nth 1 _tmp)) (/ pi 4) 2) _angle_of_text (rtos _n 2))
-;		(if  (> (LENGTH _tmp) 2)
-;				(command "_text" (polar (list (car _tmp) (nth 1 _tmp)) (/ pi 4) 6) _angle_of_text (nth 2 _tmp))			
-;		)
 		(setq _n (1+ _n))
 	)
 	(command "_color" "_BYLAYER")
-	(vla-endundomark _undo_tmp) ; конец маркера 
+	
+	(vla-endundomark _undo_tmp) 
 )
 
 (defun draw_circle_and_text (list_of_coord 	radius	index  acad_axis  side / _n  _undo_tmp _angle_of_text _tmp_fake)
@@ -344,7 +341,6 @@
 	;  напр.
 	;	draw_circle_and_text (list 0 0) 8 0 "axis" 4	<= 	"4" - означает, что точки будут проставляться в 4 четверти
 	;	FiXME:		"axis" - цвет отрисовки примитивов
-	;	для четверти 0 проставляться ничего не будет
 	;									--
 	;							--	       --
 	;					 --						 Х
@@ -353,8 +349,8 @@
 	;
 	(vla-startundomark
 		(setq _undo_tmp (vla-get-activedocument (vlax-get-acad-object)))
-	) ; маркер вложенности отмены
-	; на bricscad "vla-startundomark" (12 под Linux) не работает=(
+    ) 
+	
 	(command "_color" GK_COLOR )
 	(setq _n index)
 	(if (= acad_axis "x/2-z")
@@ -364,31 +360,29 @@
 	(foreach _tmp list_of_coord
 		(command "КРУГ" (list (car _tmp) (nth 1 _tmp)) radius)
 		(command "_text" (polar (list (car _tmp) (nth 1 _tmp)) (/ pi 4) 2) _angle_of_text (rtos _n 2))
-;		(if  (> (LENGTH _tmp) 2)
-;				(command "_text" (polar (list (car _tmp) (nth 1 _tmp)) (/ pi 4) 6) _angle_of_text (nth 2 _tmp))			
-;		)
 		(setq _n (1+ _n))
 		(cond 
 			((= side 1) ; первая четверть
-				(command "ТОЧКА"  (list (car _tmp) (+ (nth 1 _tmp) radius)) )
-				(command "ТОЧКА" (list (- (car _tmp) radius) (nth 1 _tmp)))
+				(command "_point"  (list (car _tmp) (+ (nth 1 _tmp) radius)) )
+				(command "_point" (list (- (car _tmp) radius) (nth 1 _tmp)))
 			)
 			((= side 2) ; вторая четверть
-				(command "ТОЧКА" (list (car _tmp) (- (nth 1 _tmp) radius)))
-				(command "ТОЧКА" (list (- (car _tmp) radius) (nth 1 _tmp)))
+				(command "_point" (list (car _tmp) (- (nth 1 _tmp) radius)))
+				(command "_point" (list (- (car _tmp) radius) (nth 1 _tmp)))
 			)
 			((= side 3) ;  3 четверть
-				(command "ТОЧКА" (list (car _tmp) (- (nth 1 _tmp) radius)))
-				(command "ТОЧКА" (list (+ (car _tmp) radius) (nth 1 _tmp)))
+				(command "_point" (list (car _tmp) (- (nth 1 _tmp) radius)))
+				(command "_point" (list (+ (car _tmp) radius) (nth 1 _tmp)))
 			)
 			((= side 4) ; 4 четверть
-				(command "ТОЧКА" (list (car _tmp) (+ (nth 1 _tmp) radius)))
-				(command "ТОЧКА" (list (+ (car _tmp) radius) (nth 1 _tmp)))
+				(command "_point" (list (car _tmp) (+ (nth 1 _tmp) radius)))
+				(command "_point" (list (+ (car _tmp) radius) (nth 1 _tmp)))
 			)		
 		)
 	)
 	(command "_color" "_BYLAYER")
-	(vla-endundomark _undo_tmp) ; конец маркера 
+	
+	(vla-endundomark _undo_tmp)
 )
 
 (defun get_font_size( / _text_style 	_text_size_s		_res)
@@ -397,8 +391,8 @@
 	; FIXME:		переделать так, чтоб не надо было указывать явно размер шрифта в имени стиля
 	(setq _text_style (getvar "TEXTSTYLE"))
 	(setq _text_size_s (substr _text_style
-						(strlen _text_style)
-				))
+													(strlen _text_style)
+													))
 	(setq _res (atoi _text_size_s ))
 )
 
@@ -412,7 +406,7 @@
 (defun print_to_table(list_of_coord   title    acad_axis index / _model_space  _pt  _n  _X  _Y		_font_size)	; печать в таблицу
 	(vl-load-com)
 	(setq _model_space (vla-get-Modelspace(vla-get-ActiveDocument(vlax-get-acad-object))))  
-	; на bricscad (12 под Linux) не работает  (vla-get-ActiveDocument(vlax-get-acad-object))
+	; на bricscad не работает  (vla-get-ActiveDocument(vlax-get-acad-object))
 	(setq _pt (getpoint "\nТочка вставки таблицы "))
 	
 	(if (or (= acad_axis "x/2-z" )  (= acad_axis "x/2-z-spesial" ))
@@ -432,7 +426,7 @@
                     (+ 2 cnt)
                     3
                     0.7
-                    (+ (* _font_size 2) 8)
+                    (+ (* _font_size 2) 5)
 					))
 	(vla-setText mytable 0 0 title)
 	(vla-setText mytable 1 0 "№ точки")
@@ -461,6 +455,126 @@
 	)
 )
 
+; EXCEL
+; прежде чем использовать эксель, необходимо его инициализировать
+; FIXME: подлежит удалению	init_excel, convert_num_to_cell, print_to_excel.
+; переписать все с импортом в обычный файл
+(defun init_excel( / _file   _file_name_template		_file_prefix)
+	(if (not GK_XL) ; глобальная переменная с именем файла
+		(progn
+			(setq _file_name_template "c:/template.xls")
+			(setq _file_prefix (getvar "DWGPREFIX")) 
+			(setq _res_xls 0)
+			(setq _n 1)
+			; копирование файла шаблона из папки программы в папку с чертежем
+			(setq _file (strcat _file_prefix  GK_CP_NAME))
+			(vl-file-copy  _file_name_template _file)
+			; работа с activeX - создание файла в екселе, запуск сессии.
+			(vl-load-com)
+			(setq GK_XL (vlax-get-or-create-object "Excel.Application"))
+			(vlax-put-property GK_XL "Visible" :vlax-true)
+			(vlax-get-property GK_XL "ActiveSheet")
+			(vlax-invoke-method (vlax-get-property GK_XL "Workbooks") "Open" _file)	
+		)
+	)
+	(princ GK_XL)
+)
+	
+(defun convert_num_to_cell(number / _res); из числа в строку с именем ячейки
+	; 
+	(setq _res (+ 4 number))
+	(cond 
+		(( and (> number -1 ) (< number 20))
+					(setq _res (strcat "B" (itoa
+												(+ 4 number)	
+											)))
+		)
+		(( and (> number 19 ) (< number 40))
+					(setq _res (strcat "E" (itoa
+												(+ 4 (- number 20))
+											)))
+		)
+		(( and (> number 39 ) (< number 60))
+					(setq _res (strcat "G" (itoa
+												(+ 4 (- number 40))
+											)))
+		)
+		(( and (> number 59 ) (< number 80))
+					(setq _res (strcat "I" (itoa
+												(+ 4 (- number 60))
+											)))
+		)
+		(( and (> number 79 ) (< number 100))
+					(setq _res (strcat "K" (itoa
+													(+ 4 (- number 80))
+											)))
+		)
+		(( and (> number 99 ) (< number 120))
+					(setq _res (strcat "M" (itoa
+													(+ 4 (- number 100))
+											)))
+		)
+		(( and (> number 119 ) (< number 139))
+					(setq _res (strcat "O" (itoa
+													(+ 4 (- number 120))
+											)))
+		)
+		(( and (> number 140 ) (< number 150))
+					(setq _res (strcat "Q" (itoa
+													(+ 4 (- number 140))
+											)))
+		)
+	)
+)
+
+(defun print_to_clipboard(list_of_codes number)
+	(setq _string "")
+	(foreach _tmp2 list_of_codes
+		(setq _string (strcat _string _tmp2 "\n"))
+	)
+	(setClipText _string)
+)
+
+(defun  print_to_excel(list_of_codes number / _tmp2  _i   _tmp_cell _res _dcl_id)
+	(init_excel)
+	(if (= number 0)
+		(progn
+				(setq _dcl_file "c:/gk_autocad/gk_excel.dcl")
+				(setq _dcl_id (load_dialog _dcl_file))
+				(if (not (new_dialog "number_cp" _dcl_id))
+					(exit)
+				)
+				(action_tile "accept"	"(setq number (get_tile \"eb_numner_cp\"))(done_dialog)")
+				(action_tile "cancel"	"(done_dialog)")
+				(start_dialog)
+				(unload_dialog _dcl_id)
+				(setq _i (atoi number))
+		)
+		(setq _i number)
+	)
+	(foreach _tmp2 list_of_codes
+			(setq _tmp_cell (vlax-get-property GK_XL "Range"		
+												(convert_num_to_cell _i)))
+			(vlax-put-property _tmp_cell "Value2" _tmp2)
+			(setq _i (+ 1 _i))
+	)
+	(princ)
+)
+
+
+(defun setClipText(str / html result)
+	(if (= 'STR (type str))
+	  (progn
+	  (setq html   (vlax-create-object "htmlfile")
+			result (vlax-invoke (vlax-get (vlax-get html 'ParentWindow) 'ClipBoardData) 'setData "Text" str)
+	  )
+	  (vlax-release-object html)
+	   str
+	   )
+	)
+	(princ)
+)
+
 
 ;###################################################################################
 ; функции работы с G -кодами	(общие)
@@ -468,10 +582,8 @@
 
 
 ; лучше эти функции не трогать(!), они держатся на МАГИИ
-; FIXME: переписать ЭТО
-; в общем, работает, так что пока не трогаю%)
 
-(defun get_part(str _from / _result)
+(defun get_part(str _from / _result) ; см. описание ниже
 	(setq str (substr str _from))
 	(if (= (strlen str) 0)
 		(setq _result "000")

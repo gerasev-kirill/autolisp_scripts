@@ -1,19 +1,17 @@
 ;
 ;###################################################################################
-;	AutoLisp
+;	AutoCAD 2007 + AutoLISP + Visual LISP
 ;	Программа преобразования полилиний в таблицы с координатами в "изломах"
 ;		* вывод в acad таблицах,
-;		* вывод в текстовые файлы,
+;		* вывод в xls-файлы,
 ;		* вывод в G-кодах.
 ;###################################################################################
-;	(Для фрезерных станков с системой координат X-Z)
+;	Для фрезерных станков с системой координат X-Z.
 ;	Герасев Кирилл
-;	gerasev.kirill@gmail.com
 ;	14/04/2012
 ;###################################################################################
 ;
-;	Все слои с расчетами должны начинаться на "T-" (англ.)
-;
+
 ;###################################################################################
 ; загрузка модуля с вспомогательными функциями
 
@@ -26,11 +24,11 @@
 
 
 (defun C:GK-CNC-PREF()
-	;FiXME:		дописать функцию настройки переменных.
+	;FiXME:		дописать функцию настройки.
 	(princ)
 )
 
-(defun C:GK-CNC-POLY( / _lst_point	_sys_var)
+(defun C:GK-CNC-POLY( / _lst_point		_sys_var)
 	;  
 	(setq _sys_var (mapcar 'getvar '("osmode" "cmdecho")))
 	(setvar "osmode" 0)
@@ -50,9 +48,9 @@
   
 	(draw_point_and_text _lst_point "x-z" 1)
 	(setq answ (getstring "\nСделать обратный порядок точек? <Д/Н>"))
-	(if ( OR ( = answ "Д" ) ( = answ "д" ) )
+	(if ( OR ( = answ "y" ) ( = answ "д" ) )
 			(progn
-				(command "ОТМЕНИТЬ"  1)
+				(command "_undo"  1)
 				(setq _lst_point (revers_order_of_coord _lst_point))
 				(draw_point_and_text _lst_point  "x-z" 1)
 				(setq GK_LIST_OF_COORD _lst_point)
@@ -94,7 +92,7 @@
 		(progn
 			(setq obj (vlax-ename->vla-object obj))
 			(if (= (vla-get-ObjectName obj) "AcDbTable")
-				(progn	;FiXME	не работает в Bricscad (12 версия под Linux)
+				(progn
 					(setq _i 2)
 					(setq _kord nil)
 					(while (< _i (vla-get-rows obj))
@@ -117,11 +115,11 @@
 	;	все примитивы также переводятся в цвет по слою.
 	;	!!!!!!!!!
 	;	обязательно наличие слоя "на печать (рамка)"
-
 	(setq GK_COLOR 5 )
 	(vla-startundomark
 		(setq _undo_tmp (vla-get-activedocument (vlax-get-acad-object)))
-    	) ; маркер вложенности отмены
+    ) 
+	
 	(setq _sys_var (mapcar 'getvar '("osmode" "cmdecho")))
 	(setvar "osmode" 0)
 	(setvar "cmdecho" 0)
@@ -133,20 +131,20 @@
 	(setq _tmp_list nil)
 	(foreach _T _T_layers
 		(setq _tmp_list (append _tmp_list  
-					(list  
-					(atoi (substr _T  3 3))
-					)
-					))
+								(list  
+								(atoi (substr _T  3 3))
+								)
+								))
 	
 	)
 	(setq _tmp_list (sort_int _tmp_list))
 	(setq _T_layers nil)
 	(foreach _T _tmp_list
 		(setq _T_layers (append _T_layers  
-					(list 
-					(strcat "T-" (itoa _T))
-					)
-					))	
+								(list 
+								(strcat "T-" (itoa _T))
+								)
+								))	
 	)
 	
 	(foreach _T _T_layers
@@ -188,5 +186,5 @@
 	
 	;;;;;;
 	(mapcar 'setvar '("osmode" "cmdecho") _sys_var)
-	(vla-endundomark _undo_tmp) ; конец маркера 
+	(vla-endundomark _undo_tmp) 
 )
