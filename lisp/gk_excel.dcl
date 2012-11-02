@@ -1,5 +1,5 @@
 number_cp : dialog {
- label = "Параметры...";
+ label = "РџР°СЂР°РјРµС‚СЂС‹...";
 //		fixed_width=true;
 //		fixed_height=true;
 		alignment = left;
@@ -7,9 +7,9 @@ number_cp : dialog {
 	:column{
 		fixed_width=true;
 		fixed_height=true;
-		label = "Укажите номер кадра, с которого";
+		label = "РЈРєР°Р¶РёС‚Рµ РЅРѕРјРµСЂ РєР°РґСЂР°, СЃ РєРѕС‚РѕСЂРѕРіРѕ";
 		:text{
-			label=" нужно вставлять УП в файл Excel:";
+			label=" РЅСѓР¶РЅРѕ РІСЃС‚Р°РІР»СЏС‚СЊ РЈРџ РІ С„Р°Р№Р» Excel:";
 			fixed_width = true;
 			}
 		alignment = left;

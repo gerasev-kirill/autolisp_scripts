@@ -1,10 +1,10 @@
 ;
 ;###################################################################################
 ;	AutoCAD 2007 + AutoLISP + Visual LISP
-;	Обертки для облегчения черчения,
-; 	а также управления файлами.
+;	РћР±РµСЂС‚РєРё РґР»СЏ РѕР±Р»РµРіС‡РµРЅРёСЏ С‡РµСЂС‡РµРЅРёСЏ,
+; 	Р° С‚Р°РєР¶Рµ СѓРїСЂР°РІР»РµРЅРёСЏ С„Р°Р№Р»Р°РјРё.
 ;###################################################################################
-;	Герасев Кирилл
+;	Р“РµСЂР°СЃРµРІ РљРёСЂРёР»Р»
 ;	24/05/2012
 ;###################################################################################
 ;
@@ -12,7 +12,7 @@
 
 (defun c:gk-open-cnc ( / _yp)
 	(setq _f (get_dwg_name))
-	(setq _yp (strcat (nth 1 _f) (nth 0 _f) "\\УП.txt") )
+	(setq _yp (strcat (nth 1 _f) (nth 0 _f) "\\РЈРџ.txt") )
 	(command "_shell" (strcat "gvim \"" _yp  "\"" ))
 )
 
@@ -29,7 +29,7 @@
 )
 
 (defun C:gk-line( / _p1 _p1_real)
-	(setq _p1 (getpoint "Введите координаты первой точки: "))
+	(setq _p1 (getpoint "Р’РІРµРґРёС‚Рµ РєРѕРѕСЂРґРёРЅР°С‚С‹ РїРµСЂРІРѕР№ С‚РѕС‡РєРё: "))
 	(setq _p1_real (list
 			    (/ (car _p1) 2) 
 			    (nth 1 _p1) 
@@ -51,8 +51,8 @@
 	;;;;;;;
 	
 	(if (/=  GK_CHAMFER  nil)
-		(setq _text (strcat "\nУкажите размер фаски<" (rtos GK_CHAMFER ) ">: " ))
-		(setq _text "\nУкажите размер фаски: ")
+		(setq _text (strcat "\nРЈРєР°Р¶РёС‚Рµ СЂР°Р·РјРµСЂ С„Р°СЃРєРё<" (rtos GK_CHAMFER ) ">: " ))
+		(setq _text "\nРЈРєР°Р¶РёС‚Рµ СЂР°Р·РјРµСЂ С„Р°СЃРєРё: ")
 	)
 	(setq _gk_chamfer (getreal _text))
 	(if (/= _gk_chamfer nil)
@@ -76,8 +76,8 @@
 	;;;;;;;
 	
 	(if (/=  GK_FILLET  nil)
-		(setq _text (strcat "\nУкажите радиус<" (rtos GK_FILLET ) ">: " ))
-		(setq _text "\nУкажите радиус: ")
+		(setq _text (strcat "\nРЈРєР°Р¶РёС‚Рµ СЂР°РґРёСѓСЃ<" (rtos GK_FILLET ) ">: " ))
+		(setq _text "\nРЈРєР°Р¶РёС‚Рµ СЂР°РґРёСѓСЃ: ")
 	)
 	(setq _gk_fillet (getreal _text))
 	(if  (/= _gk_fillet nil)
@@ -101,8 +101,8 @@
 	;;;;;;;
 	
 	(if (/=  GK_LONG nil)
-		(setq _text (strcat "\nУкажите расстояние смещения<" (rtos GK_LONG) ">: " ))
-		(setq _text "\nУкажите расстояние смещения: ")
+		(setq _text (strcat "\nРЈРєР°Р¶РёС‚Рµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ СЃРјРµС‰РµРЅРёСЏ<" (rtos GK_LONG) ">: " ))
+		(setq _text "\nРЈРєР°Р¶РёС‚Рµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ СЃРјРµС‰РµРЅРёСЏ: ")
 	)
 	(setq _long (getreal _text))
 	(if (and (/= GK_LONG nil ) (= _long nil))
@@ -111,11 +111,11 @@
 	(if (/= _long nil)
 		(progn 
 			(setq GK_LONG _long)
-			(setq _ent (car (entsel "\nВыберите примитив: ")))
+			(setq _ent (car (entsel "\nР’С‹Р±РµСЂРёС‚Рµ РїСЂРёРјРёС‚РёРІ: ")))
 			(setq _ent2 (entget _ent))
 			(setq _lst_point (from_object_to_coord _ent2 ))
 			(setq _lst_point (find_real_coord  _lst_point  "x/2-z"))
-			(setq _p1 (getpoint "Укажите направление:"))
+			(setq _p1 (getpoint "РЈРєР°Р¶РёС‚Рµ РЅР°РїСЂР°РІР»РµРЅРёРµ:"))
 			(if (> (LENGTH _lst_point) 3)
 				(command "_offset" GK_LONG _ent  _p1 "")
 				(if (= (car (car _lst_point)) ( car (last _lst_point)))

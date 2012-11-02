@@ -1,21 +1,21 @@
 ;
 ;###################################################################################
 ;	AutoCAD 2007 + AutoLISP + Visual LISP
-;	Модуль для программ
-;	Перебор точек, сохранение в таблицы, сохранение в файлы и т.д.
-;	Для токарных станков с повернутой системой координат X/2-Z.
-;	Для обычных координат с НЕ повернутыми координатами X-Z
+;	РњРѕРґСѓР»СЊ РґР»СЏ РїСЂРѕРіСЂР°РјРј
+;	РџРµСЂРµР±РѕСЂ С‚РѕС‡РµРє, СЃРѕС…СЂР°РЅРµРЅРёРµ РІ С‚Р°Р±Р»РёС†С‹, СЃРѕС…СЂР°РЅРµРЅРёРµ РІ С„Р°Р№Р»С‹ Рё С‚.Рґ.
+;	Р”Р»СЏ С‚РѕРєР°СЂРЅС‹С… СЃС‚Р°РЅРєРѕРІ СЃ РїРѕРІРµСЂРЅСѓС‚РѕР№ СЃРёСЃС‚РµРјРѕР№ РєРѕРѕСЂРґРёРЅР°С‚ X/2-Z.
+;	Р”Р»СЏ РѕР±С‹С‡РЅС‹С… РєРѕРѕСЂРґРёРЅР°С‚ СЃ РќР• РїРѕРІРµСЂРЅСѓС‚С‹РјРё РєРѕРѕСЂРґРёРЅР°С‚Р°РјРё X-Z
 ;###################################################################################
-;	Переменная для опеределения расположения координатных осей:
+;	РџРµСЂРµРјРµРЅРЅР°СЏ РґР»СЏ РѕРїРµСЂРµРґРµР»РµРЅРёСЏ СЂР°СЃРїРѕР»РѕР¶РµРЅРёСЏ РєРѕРѕСЂРґРёРЅР°С‚РЅС‹С… РѕСЃРµР№:
 ;	acad_asix = {	
-;							"x/2-z" 	- для токарных станков		
-;							"x-z"		-  для фрезерных и остальных
+;							"x/2-z" 	- РґР»СЏ С‚РѕРєР°СЂРЅС‹С… СЃС‚Р°РЅРєРѕРІ		
+;							"x-z"		-  РґР»СЏ С„СЂРµР·РµСЂРЅС‹С… Рё РѕСЃС‚Р°Р»СЊРЅС‹С…
 ;							}
 ;###################################################################################
-;	Герасев Кирилл
+;	Р“РµСЂР°СЃРµРІ РљРёСЂРёР»Р»
 ;	25/04/2012
 ;###################################################################################
-;		 ФУНКЦИИ МОДУЛЯ:
+;		 Р¤РЈРќРљР¦РР РњРћР”РЈР›РЇ:
 ;
 ;		 find_real_coord ( list_of_coord  acad_axis ) => list_of_coord
 ;		 revers_order_of_coord( list_of_coord ) => list_of_coord
@@ -28,7 +28,7 @@
 ;
 
 ;###################################################################################
-; общее для всех программ
+; РѕР±С‰РµРµ РґР»СЏ РІСЃРµС… РїСЂРѕРіСЂР°РјРј
 ;
 (defun min1(f)
  (cond 
@@ -63,23 +63,23 @@
 
 
 
-(defun real_X_Y(coord acad_axis / _realX _realY _res) ; возвращение списка с реальными координатами
+(defun real_X_Y(coord acad_axis / _realX _realY _res) ; РІРѕР·РІСЂР°С‰РµРЅРёРµ СЃРїРёСЃРєР° СЃ СЂРµР°Р»СЊРЅС‹РјРё РєРѕРѕСЂРґРёРЅР°С‚Р°РјРё
 	(if (= acad_axis "x/2-z")
-		(progn	; для токарных станков
+		(progn	; РґР»СЏ С‚РѕРєР°СЂРЅС‹С… СЃС‚Р°РЅРєРѕРІ
 			(setq _realX (nth 1 coord))
 			(setq _realX (* -1 coord))
 			(setq _realY (car coord))
 			(list (list _realX _realY))
 		)
-		(	;для фрезерных и остальных
+		(	;РґР»СЏ С„СЂРµР·РµСЂРЅС‹С… Рё РѕСЃС‚Р°Р»СЊРЅС‹С…
 			(setq _res coord)
 		)
 	)
 )
 
-(defun find_real_coord (list_of_coord  acad_axis /  ; найти реальные координаты для чертежа
+(defun find_real_coord (list_of_coord  acad_axis /  ; РЅР°Р№С‚Рё СЂРµР°Р»СЊРЅС‹Рµ РєРѕРѕСЂРґРёРЅР°С‚С‹ РґР»СЏ С‡РµСЂС‚РµР¶Р°
 												_res  _tmp  _realX  _realY) 
-	(if (= acad_axis "x/2-z");если токарный станок, то
+	(if (= acad_axis "x/2-z");РµСЃР»Рё С‚РѕРєР°СЂРЅС‹Р№ СЃС‚Р°РЅРѕРє, С‚Рѕ
 		(progn
 			(setq	_res NIL)
 			( foreach _tmp list_of_coord
@@ -94,12 +94,12 @@
 				)
 			)
 		)
-		; иначе вернуть тоже что и было
+		; РёРЅР°С‡Рµ РІРµСЂРЅСѓС‚СЊ С‚РѕР¶Рµ С‡С‚Рѕ Рё Р±С‹Р»Рѕ
 		(setq _res list_of_coord)
 	)
 )
 
-(defun revers_order_of_coord(list_of_coord / _res _n) 	; обратная сортировка координат точек
+(defun revers_order_of_coord(list_of_coord / _res _n) 	; РѕР±СЂР°С‚РЅР°СЏ СЃРѕСЂС‚РёСЂРѕРІРєР° РєРѕРѕСЂРґРёРЅР°С‚ С‚РѕС‡РµРє
 	(setq _res NIL)
 	(setq _n  (LENGTH list_of_coord))
 	(while (/= _n 0)
@@ -108,9 +108,9 @@
 	)
 )
 
-(defun mk_difference (list_of_coord / _dif  _last_coord  _X  _Y _tmp_coord) ; определение  относительных координат
+(defun mk_difference (list_of_coord / _dif  _last_coord  _X  _Y _tmp_coord) ; РѕРїСЂРµРґРµР»РµРЅРёРµ  РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅС‹С… РєРѕРѕСЂРґРёРЅР°С‚
 	(setq	_dif NIL)
-	; считается относительно 1 точки в списке
+	; СЃС‡РёС‚Р°РµС‚СЃСЏ РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ 1 С‚РѕС‡РєРё РІ СЃРїРёСЃРєРµ
 	(setq _last_coord (car list_of_coord))
 	(foreach _tmp list_of_coord 
 		(setq _X ( - (car _tmp) (car _last_coord)))
@@ -118,7 +118,7 @@
 		(setq _last_coord _tmp)
 		(if (> (LENGTH _tmp) 2)
 			(progn 
-				; для дуг
+				; РґР»СЏ РґСѓРі
 				(setq _dif ( append _dif (list (list _X _Y (nth 2 _tmp)))))
 			)
 			(setq _dif ( append _dif (list (list _X _Y))))
@@ -126,10 +126,10 @@
 	)
 )
 
-(defun from_object_to_coord(object /  _n _lst_point _res _tmp ) ; определение координат из объектов типа линий, точек, полилиний
+(defun from_object_to_coord(object /  _n _lst_point _res _tmp ) ; РѕРїСЂРµРґРµР»РµРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚ РёР· РѕР±СЉРµРєС‚РѕРІ С‚РёРїР° Р»РёРЅРёР№, С‚РѕС‡РµРє, РїРѕР»РёР»РёРЅРёР№
 	(setq _lst_point NIL)
 	(setq _n 0)
-	(while ( <  (+ _n 3) (LENGTH object)); полилиния
+	(while ( <  (+ _n 3) (LENGTH object)); РїРѕР»РёР»РёРЅРёСЏ
 		(setq _tmp (nth _n object))
 		(if (= ( car _tmp) 10 )  
 			(progn
@@ -141,7 +141,7 @@
 		)
 		(setq _n (1+ _n))
 	)
-	(if (< (LENGTH object) 20); линия
+	(if (< (LENGTH object) 20); Р»РёРЅРёСЏ
 		(progn
 			(foreach _tmp object
 				(if (= (car _tmp ) 10)
@@ -156,8 +156,8 @@
 	(setq _res _lst_point)
 )
 
-(defun bubltoarc (pt1 pt2 bubl / dst cnt r); переводит представление дуги из polyline в arc.
-  ;начальная _point, конечная, значение 42 группы
+(defun bubltoarc (pt1 pt2 bubl / dst cnt r); РїРµСЂРµРІРѕРґРёС‚ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ РґСѓРіРё РёР· polyline РІ arc.
+  ;РЅР°С‡Р°Р»СЊРЅР°СЏ _point, РєРѕРЅРµС‡РЅР°СЏ, Р·РЅР°С‡РµРЅРёРµ 42 РіСЂСѓРїРїС‹
 	(setq 	dst (distance pt1 pt2)
 		r	(+ (* (/ dst 2.0) bubl) (/ (- (* (/ dst 2.0) (/ dst 2.0))
 			(* (/ (* dst bubl) 2.0) (/ (* dst bubl) 2.0))) (* dst bubl)))
@@ -167,7 +167,7 @@
 			(- (* (/ dst 2.0) bubl) r))
 	);end of setq
 	(list cnt r (angle cnt pt1) (angle cnt pt2))
-  ;точки центра дуги, радиус, начального угла дуги, конечного угла дуги
+  ;С‚РѕС‡РєРё С†РµРЅС‚СЂР° РґСѓРіРё, СЂР°РґРёСѓСЃ, РЅР°С‡Р°Р»СЊРЅРѕРіРѕ СѓРіР»Р° РґСѓРіРё, РєРѕРЅРµС‡РЅРѕРіРѕ СѓРіР»Р° РґСѓРіРё
 )
 
 (defun get_current_layer( / _res)
@@ -177,7 +177,7 @@
 	)
 )
 
-(defun is_T(layers / _res _T_lay) ; является ли слой слоем с расчетными точками движения инструмента
+(defun is_T(layers / _res _T_lay) ; СЏРІР»СЏРµС‚СЃСЏ Р»Рё СЃР»РѕР№ СЃР»РѕРµРј СЃ СЂР°СЃС‡РµС‚РЅС‹РјРё С‚РѕС‡РєР°РјРё РґРІРёР¶РµРЅРёСЏ РёРЅСЃС‚СЂСѓРјРµРЅС‚Р°
 	(setq _T_lay nil)
 	(foreach lay layers
 		(if (= (substr lay 1 2) "T-")
@@ -187,13 +187,13 @@
 	(setq _res _T_lay)
 )
 
-(defun copy_to_layer (layer_name weigth /  _material _weigth _res ); сопирование из слоя текущего в слой с именем layer_name
+(defun copy_to_layer (layer_name weigth /  _material _weigth _res ); СЃРѕРїРёСЂРѕРІР°РЅРёРµ РёР· СЃР»РѕСЏ С‚РµРєСѓС‰РµРіРѕ РІ СЃР»РѕР№ СЃ РёРјРµРЅРµРј layer_name
 	(setq _material (ssget "_w" (list  -200  -200) (list  200 200)))
 	(command "_copytolayer" _material "" layer_name (list 0 0) (list 0 weigth))
 	(princ)
 )
 
-(defun get_date ( / d yr mo day) ; получение даты
+(defun get_date ( / d yr mo day) ; РїРѕР»СѓС‡РµРЅРёРµ РґР°С‚С‹
      (setq d (rtos (getvar "CDATE") 2 6)
 	 
           yr (substr d 3 2)
@@ -207,9 +207,9 @@
 )
 
 (defun get_all_info( / _operation _modification _name   _full_path _res _res1)
-	; получение информации из иерархии папок. стуктура расположения проекта должна быть:
-	;root/Имя_детали/Номер_детали_и_номер_изделия/Операция
-	;FIXME: 	подумать на счет изменения структуры расположения файлов
+	; РїРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё РёР· РёРµСЂР°СЂС…РёРё РїР°РїРѕРє. СЃС‚СѓРєС‚СѓСЂР° СЂР°СЃРїРѕР»РѕР¶РµРЅРёСЏ РїСЂРѕРµРєС‚Р° РґРѕР»Р¶РЅР° Р±С‹С‚СЊ:
+	;root/РРјСЏ_РґРµС‚Р°Р»Рё/РќРѕРјРµСЂ_РґРµС‚Р°Р»Рё_Рё_РЅРѕРјРµСЂ_РёР·РґРµР»РёСЏ/РћРїРµСЂР°С†РёСЏ
+	;FIXME: 	РїРѕРґСѓРјР°С‚СЊ РЅР° СЃС‡РµС‚ РёР·РјРµРЅРµРЅРёСЏ СЃС‚СЂСѓРєС‚СѓСЂС‹ СЂР°СЃРїРѕР»РѕР¶РµРЅРёСЏ С„Р°Р№Р»РѕРІ
 	(setq _full_path (GETVAR "dwgprefix"))
 	(setq _operation (get_last_folder _full_path))
 	(setq _modification (get_last_folder (last _operation)))
@@ -222,10 +222,10 @@
 )
 
 (defun get_last_folder( folder_name /  _i  _res   _tmp  )
-	; функция для определения родительской папки и имени последней папки в строке
-	; только для WINDOWS
-	; FIXME: 	предусмотреть для LINUX
-	; возвращается: 1-имя папки; 2-путь к родительской папке
+	; С„СѓРЅРєС†РёСЏ РґР»СЏ РѕРїСЂРµРґРµР»РµРЅРёСЏ СЂРѕРґРёС‚РµР»СЊСЃРєРѕР№ РїР°РїРєРё Рё РёРјРµРЅРё РїРѕСЃР»РµРґРЅРµР№ РїР°РїРєРё РІ СЃС‚СЂРѕРєРµ
+	; С‚РѕР»СЊРєРѕ РґР»СЏ WINDOWS
+	; FIXME: 	РїСЂРµРґСѓСЃРјРѕС‚СЂРµС‚СЊ РґР»СЏ LINUX
+	; РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ: 1-РёРјСЏ РїР°РїРєРё; 2-РїСѓС‚СЊ Рє СЂРѕРґРёС‚РµР»СЊСЃРєРѕР№ РїР°РїРєРµ
 	(setq _i (- (strlen folder_name) 1))
 	(while (> _i 0)
 		(setq _tmp (substr folder_name _i 1))
@@ -258,7 +258,7 @@
         )
       )
     )
-	; в списке возвращается все слои кроме  Defpoints и 0
+	; РІ СЃРїРёСЃРєРµ РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ РІСЃРµ СЃР»РѕРё РєСЂРѕРјРµ  Defpoints Рё 0
 	(if (not (or (equal _ln "Defpoints") (equal  _ln "0")))
 		(setq _layers (append _layers (list _ln)))
 	)
@@ -268,9 +268,9 @@
 
 
 ;###################################################################################
-; вспомогательные функции печати и отрисовки
+; РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё РїРµС‡Р°С‚Рё Рё РѕС‚СЂРёСЃРѕРІРєРё
 
-(defun debug (text debug_info) ; вывод отладочной информации
+(defun debug (text debug_info) ; РІС‹РІРѕРґ РѕС‚Р»Р°РґРѕС‡РЅРѕР№ РёРЅС„РѕСЂРјР°С†РёРё
 	(princ "\n")
 	(princ text)
 	(princ " ")
@@ -279,7 +279,7 @@
 )
 
 (defun draw_all(_lst_point index  acad_axis /  _rev_order _res _sys_var)
-	; отрисовка точек . прямой и обратный порядок
+	; РѕС‚СЂРёСЃРѕРІРєР° С‚РѕС‡РµРє . РїСЂСЏРјРѕР№ Рё РѕР±СЂР°С‚РЅС‹Р№ РїРѕСЂСЏРґРѕРє
 	
 	(setq _sys_var (mapcar 'getvar '("osmode" "cmdecho")))
 	(setvar "osmode" 0)
@@ -294,10 +294,10 @@
 	)
 	(draw_point_and_text 	_lst_point 	 acad_axis   index)
 	(setq _rev_order 0)
-	(setq answ (getstring "\nСделать обратный порядок точек? <Д/Н>"))
-	(if ( OR ( = answ "Д" ) ( = answ "д" ) )
+	(setq answ (getstring "\nРЎРґРµР»Р°С‚СЊ РѕР±СЂР°С‚РЅС‹Р№ РїРѕСЂСЏРґРѕРє С‚РѕС‡РµРє? <Р”/Рќ>"))
+	(if ( OR ( = answ "Р”" ) ( = answ "Рґ" ) )
 		(progn
-			(command "ОТМЕНИТЬ"  1)
+			(command "РћРўРњР•РќРРўР¬"  1)
 			(setq _lst_point (revers_order_of_coord _lst_point))
 			(draw_point_and_text _lst_point		acad_axis   index)
 			(setq _rev_order 1)
@@ -315,7 +315,7 @@
 	(vla-startundomark
 		(setq _undo_tmp (vla-get-activedocument (vlax-get-acad-object)))
     ) 
-	; на bricscad не работает=(
+	; РЅР° bricscad РЅРµ СЂР°Р±РѕС‚Р°РµС‚=(
 	
 	(setq _n index)
 	(command "_color" GK_COLOR)
@@ -325,7 +325,7 @@
 	)
 	(foreach _tmp list_of_coord
 		(command "_point" (list (car _tmp) (nth 1 _tmp)))
-		; FIXME:		расставлять _text на расстоянии в соответствии с стилем.
+		; FIXME:		СЂР°СЃСЃС‚Р°РІР»СЏС‚СЊ _text РЅР° СЂР°СЃСЃС‚РѕСЏРЅРёРё РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ СЃС‚РёР»РµРј.
 		(command "_text" (polar (list (car _tmp) (nth 1 _tmp)) (/ pi 4) 2) _angle_of_text (rtos _n 2))
 		(setq _n (1+ _n))
 	)
@@ -335,17 +335,17 @@
 )
 
 (defun draw_circle_and_text (list_of_coord 	radius	index  acad_axis  side / _n  _undo_tmp _angle_of_text _tmp_fake)
-	;  функция для простановки окружностей радиусом radius вместо простых точек. 
-	;  также проставляются точки на осях окружности
-	;  точки не будут проставляться, если четверть не будет в диапазоне 1...4
-	;  напр.
-	;	draw_circle_and_text (list 0 0) 8 0 "axis" 4	<= 	"4" - означает, что точки будут проставляться в 4 четверти
-	;	FiXME:		"axis" - цвет отрисовки примитивов
+	;  С„СѓРЅРєС†РёСЏ РґР»СЏ РїСЂРѕСЃС‚Р°РЅРѕРІРєРё РѕРєСЂСѓР¶РЅРѕСЃС‚РµР№ СЂР°РґРёСѓСЃРѕРј radius РІРјРµСЃС‚Рѕ РїСЂРѕСЃС‚С‹С… С‚РѕС‡РµРє. 
+	;  С‚Р°РєР¶Рµ РїСЂРѕСЃС‚Р°РІР»СЏСЋС‚СЃСЏ С‚РѕС‡РєРё РЅР° РѕСЃСЏС… РѕРєСЂСѓР¶РЅРѕСЃС‚Рё
+	;  С‚РѕС‡РєРё РЅРµ Р±СѓРґСѓС‚ РїСЂРѕСЃС‚Р°РІР»СЏС‚СЊСЃСЏ, РµСЃР»Рё С‡РµС‚РІРµСЂС‚СЊ РЅРµ Р±СѓРґРµС‚ РІ РґРёР°РїР°Р·РѕРЅРµ 1...4
+	;  РЅР°РїСЂ.
+	;	draw_circle_and_text (list 0 0) 8 0 "axis" 4	<= 	"4" - РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ С‚РѕС‡РєРё Р±СѓРґСѓС‚ РїСЂРѕСЃС‚Р°РІР»СЏС‚СЊСЃСЏ РІ 4 С‡РµС‚РІРµСЂС‚Рё
+	;	FiXME:		"axis" - С†РІРµС‚ РѕС‚СЂРёСЃРѕРІРєРё РїСЂРёРјРёС‚РёРІРѕРІ
 	;									--
 	;							--	       --
-	;					 --						 Х
+	;					 --						 РҐ
 	;							--			--
-	;									Х
+	;									РҐ
 	;
 	(vla-startundomark
 		(setq _undo_tmp (vla-get-activedocument (vlax-get-acad-object)))
@@ -358,23 +358,23 @@
 		(setq _angle_of_text 0)
 	)
 	(foreach _tmp list_of_coord
-		(command "КРУГ" (list (car _tmp) (nth 1 _tmp)) radius)
+		(command "РљР РЈР“" (list (car _tmp) (nth 1 _tmp)) radius)
 		(command "_text" (polar (list (car _tmp) (nth 1 _tmp)) (/ pi 4) 2) _angle_of_text (rtos _n 2))
 		(setq _n (1+ _n))
 		(cond 
-			((= side 1) ; первая четверть
+			((= side 1) ; РїРµСЂРІР°СЏ С‡РµС‚РІРµСЂС‚СЊ
 				(command "_point"  (list (car _tmp) (+ (nth 1 _tmp) radius)) )
 				(command "_point" (list (- (car _tmp) radius) (nth 1 _tmp)))
 			)
-			((= side 2) ; вторая четверть
+			((= side 2) ; РІС‚РѕСЂР°СЏ С‡РµС‚РІРµСЂС‚СЊ
 				(command "_point" (list (car _tmp) (- (nth 1 _tmp) radius)))
 				(command "_point" (list (- (car _tmp) radius) (nth 1 _tmp)))
 			)
-			((= side 3) ;  3 четверть
+			((= side 3) ;  3 С‡РµС‚РІРµСЂС‚СЊ
 				(command "_point" (list (car _tmp) (- (nth 1 _tmp) radius)))
 				(command "_point" (list (+ (car _tmp) radius) (nth 1 _tmp)))
 			)
-			((= side 4) ; 4 четверть
+			((= side 4) ; 4 С‡РµС‚РІРµСЂС‚СЊ
 				(command "_point" (list (car _tmp) (+ (nth 1 _tmp) radius)))
 				(command "_point" (list (+ (car _tmp) radius) (nth 1 _tmp)))
 			)		
@@ -386,9 +386,9 @@
 )
 
 (defun get_font_size( / _text_style 	_text_size_s		_res)
-	; возвращение размера шрифта из названия текущего стиля
-	; напр: 	"по ГОСТ 3" => 3
-	; FIXME:		переделать так, чтоб не надо было указывать явно размер шрифта в имени стиля
+	; РІРѕР·РІСЂР°С‰РµРЅРёРµ СЂР°Р·РјРµСЂР° С€СЂРёС„С‚Р° РёР· РЅР°Р·РІР°РЅРёСЏ С‚РµРєСѓС‰РµРіРѕ СЃС‚РёР»СЏ
+	; РЅР°РїСЂ: 	"РїРѕ Р“РћРЎРў 3" => 3
+	; FIXME:		РїРµСЂРµРґРµР»Р°С‚СЊ С‚Р°Рє, С‡С‚РѕР± РЅРµ РЅР°РґРѕ Р±С‹Р»Рѕ СѓРєР°Р·С‹РІР°С‚СЊ СЏРІРЅРѕ СЂР°Р·РјРµСЂ С€СЂРёС„С‚Р° РІ РёРјРµРЅРё СЃС‚РёР»СЏ
 	(setq _text_style (getvar "TEXTSTYLE"))
 	(setq _text_size_s (substr _text_style
 													(strlen _text_style)
@@ -397,21 +397,21 @@
 )
 
 (defun round (var to / _res)
-		; функция округления
-		; почему ее сделал не помню%)
+		; С„СѓРЅРєС†РёСЏ РѕРєСЂСѓРіР»РµРЅРёСЏ
+		; РїРѕС‡РµРјСѓ РµРµ СЃРґРµР»Р°Р» РЅРµ РїРѕРјРЅСЋ%)
 		(setq _res (rtos var 2 to ))
 		(setq _res (atof _res))
 ) 
 
-(defun print_to_table(list_of_coord   title    acad_axis index / _model_space  _pt  _n  _X  _Y		_font_size)	; печать в таблицу
+(defun print_to_table(list_of_coord   title    acad_axis index / _model_space  _pt  _n  _X  _Y		_font_size)	; РїРµС‡Р°С‚СЊ РІ С‚Р°Р±Р»РёС†Сѓ
 	(vl-load-com)
 	(setq _model_space (vla-get-Modelspace(vla-get-ActiveDocument(vlax-get-acad-object))))  
-	; на bricscad не работает  (vla-get-ActiveDocument(vlax-get-acad-object))
-	(setq _pt (getpoint "\nТочка вставки таблицы "))
+	; РЅР° bricscad РЅРµ СЂР°Р±РѕС‚Р°РµС‚  (vla-get-ActiveDocument(vlax-get-acad-object))
+	(setq _pt (getpoint "\nРўРѕС‡РєР° РІСЃС‚Р°РІРєРё С‚Р°Р±Р»РёС†С‹ "))
 	
 	(if (or (= acad_axis "x/2-z" )  (= acad_axis "x/2-z-spesial" ))
 		(progn
-			; грязный мега-хак, так делается только для координат X/2-Z
+			; РіСЂСЏР·РЅС‹Р№ РјРµРіР°-С…Р°Рє, С‚Р°Рє РґРµР»Р°РµС‚СЃСЏ С‚РѕР»СЊРєРѕ РґР»СЏ РєРѕРѕСЂРґРёРЅР°С‚ X/2-Z
 			(setq _X (nth 1 _pt))
 			(setq _Y (car _pt))
 			(setq _Y (* -1 _Y))
@@ -429,8 +429,8 @@
                     (+ (* _font_size 2) 5)
 					))
 	(vla-setText mytable 0 0 title)
-	(vla-setText mytable 1 0 "№ точки")
-	(vla-setText mytable 1 1 "Х")
+	(vla-setText mytable 1 0 "в„– С‚РѕС‡РєРё")
+	(vla-setText mytable 1 1 "РҐ")
 	(if (or (= acad_axis "x/2-z" )  (= acad_axis "x/2-z-spesial" ))
 		(vla-setText mytable 1 2 "Z")
 		(vla-setText mytable 1 2 "Y")
@@ -456,20 +456,20 @@
 )
 
 ; EXCEL
-; прежде чем использовать эксель, необходимо его инициализировать
-; FIXME: подлежит удалению	init_excel, convert_num_to_cell, print_to_excel.
-; переписать все с импортом в обычный файл
+; РїСЂРµР¶РґРµ С‡РµРј РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЌРєСЃРµР»СЊ, РЅРµРѕР±С…РѕРґРёРјРѕ РµРіРѕ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ
+; FIXME: РїРѕРґР»РµР¶РёС‚ СѓРґР°Р»РµРЅРёСЋ	init_excel, convert_num_to_cell, print_to_excel.
+; РїРµСЂРµРїРёСЃР°С‚СЊ РІСЃРµ СЃ РёРјРїРѕСЂС‚РѕРј РІ РѕР±С‹С‡РЅС‹Р№ С„Р°Р№Р»
 (defun init_excel( / _file   _file_name_template		_file_prefix)
-	(if (not GK_XL) ; глобальная переменная с именем файла
+	(if (not GK_XL) ; РіР»РѕР±Р°Р»СЊРЅР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ СЃ РёРјРµРЅРµРј С„Р°Р№Р»Р°
 		(progn
 			(setq _file_name_template "c:/template.xls")
 			(setq _file_prefix (getvar "DWGPREFIX")) 
 			(setq _res_xls 0)
 			(setq _n 1)
-			; копирование файла шаблона из папки программы в папку с чертежем
+			; РєРѕРїРёСЂРѕРІР°РЅРёРµ С„Р°Р№Р»Р° С€Р°Р±Р»РѕРЅР° РёР· РїР°РїРєРё РїСЂРѕРіСЂР°РјРјС‹ РІ РїР°РїРєСѓ СЃ С‡РµСЂС‚РµР¶РµРј
 			(setq _file (strcat _file_prefix  GK_CP_NAME))
 			(vl-file-copy  _file_name_template _file)
-			; работа с activeX - создание файла в екселе, запуск сессии.
+			; СЂР°Р±РѕС‚Р° СЃ activeX - СЃРѕР·РґР°РЅРёРµ С„Р°Р№Р»Р° РІ РµРєСЃРµР»Рµ, Р·Р°РїСѓСЃРє СЃРµСЃСЃРёРё.
 			(vl-load-com)
 			(setq GK_XL (vlax-get-or-create-object "Excel.Application"))
 			(vlax-put-property GK_XL "Visible" :vlax-true)
@@ -480,7 +480,7 @@
 	(princ GK_XL)
 )
 	
-(defun convert_num_to_cell(number / _res); из числа в строку с именем ячейки
+(defun convert_num_to_cell(number / _res); РёР· С‡РёСЃР»Р° РІ СЃС‚СЂРѕРєСѓ СЃ РёРјРµРЅРµРј СЏС‡РµР№РєРё
 	; 
 	(setq _res (+ 4 number))
 	(cond 
@@ -577,13 +577,13 @@
 
 
 ;###################################################################################
-; функции работы с G -кодами	(общие)
-; преобразование в строки
+; С„СѓРЅРєС†РёРё СЂР°Р±РѕС‚С‹ СЃ G -РєРѕРґР°РјРё	(РѕР±С‰РёРµ)
+; РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ РІ СЃС‚СЂРѕРєРё
 
 
-; лучше эти функции не трогать(!), они держатся на МАГИИ
+; Р»СѓС‡С€Рµ СЌС‚Рё С„СѓРЅРєС†РёРё РЅРµ С‚СЂРѕРіР°С‚СЊ(!), РѕРЅРё РґРµСЂР¶Р°С‚СЃСЏ РЅР° РњРђР“РР
 
-(defun get_part(str _from / _result) ; см. описание ниже
+(defun get_part(str _from / _result) ; СЃРј. РѕРїРёСЃР°РЅРёРµ РЅРёР¶Рµ
 	(setq str (substr str _from))
 	(if (= (strlen str) 0)
 		(setq _result "000")
@@ -606,8 +606,8 @@
 		)
 	)
   
-(defun coord_to_string( n_t / _result _res part) ; преобразование числа в строку
-	; формат: 	89.09756 => "89097"
+(defun coord_to_string( n_t / _result _res part) ; РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ С‡РёСЃР»Р° РІ СЃС‚СЂРѕРєСѓ
+	; С„РѕСЂРјР°С‚: 	89.09756 => "89097"
 	(if (equal n_t 0.0 0.00001)
 			(setq n_t 0)
 	)

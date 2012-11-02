@@ -1,24 +1,24 @@
 ;
 ;###################################################################################
 ;	AutoCAD 2007 + AutoLISP + Visual LISP
-;	Модуль для программ
-;	Отстраивание УП по кадрам
-; 	Функции разбора фасок, дуг, линий
+;	РњРѕРґСѓР»СЊ РґР»СЏ РїСЂРѕРіСЂР°РјРј
+;	РћС‚СЃС‚СЂР°РёРІР°РЅРёРµ РЈРџ РїРѕ РєР°РґСЂР°Рј
+; 	Р¤СѓРЅРєС†РёРё СЂР°Р·Р±РѕСЂР° С„Р°СЃРѕРє, РґСѓРі, Р»РёРЅРёР№
 ;###################################################################################
-;	Герасев Кирилл
+;	Р“РµСЂР°СЃРµРІ РљРёСЂРёР»Р»
 ;	08/05/2012
 ;###################################################################################
 ;	
 
-;		чтение из файла
-; 		возвращение в виде списка
+;		С‡С‚РµРЅРёРµ РёР· С„Р°Р№Р»Р°
+; 		РІРѕР·РІСЂР°С‰РµРЅРёРµ РІ РІРёРґРµ СЃРїРёСЃРєР°
 (load "c:/gk_autocad/main_module")
 (setq GK_COLOR_F 6)
 
 (defun read_from_txt( / _l  _program  _f _res)
 
 		(setq _f (get_dwg_name))
-		(setq _f (open (strcat (nth 1 _f) (nth 0 _f)  "\\УП.txt") "r"))
+		(setq _f (open (strcat (nth 1 _f) (nth 0 _f)  "\\РЈРџ.txt") "r"))
 		(setq _program nil)
 		(setq _l (read-line _f) )
 
@@ -32,32 +32,32 @@
 		(setq _res _program)
 )
 
-;	вывод отладочной инфы
+;	РІС‹РІРѕРґ РѕС‚Р»Р°РґРѕС‡РЅРѕР№ РёРЅС„С‹
 (defun debug (text debug_info)
 	(princ text)
 	(princ debug_info)
 	(princ "\n")
 )
 
-;	последний символ из слова
+;	РїРѕСЃР»РµРґРЅРёР№ СЃРёРјРІРѕР» РёР· СЃР»РѕРІР°
 (defun  strlast (string / _res 	_len)
 	(setq _len (strlen string))
 	(setq _res (substr string _len))
 )
 
-; 	первый символ из строки
+; 	РїРµСЂРІС‹Р№ СЃРёРјРІРѕР» РёР· СЃС‚СЂРѕРєРё
 (defun strfirst (  string / _res)
 	(setq _res (substr string 1 1))
 )
 
-;	взятие символа из строки по индексу
+;	РІР·СЏС‚РёРµ СЃРёРјРІРѕР»Р° РёР· СЃС‚СЂРѕРєРё РїРѕ РёРЅРґРµРєСЃСѓ
 (defun strindex (string index / _res)
 	(setq _res (substr string index 1))
 )
 
-;	вывод проверочных кадров
+;	РІС‹РІРѕРґ РїСЂРѕРІРµСЂРѕС‡РЅС‹С… РєР°РґСЂРѕРІ
 (defun print_verify (kadr info)
-	(princ "№ ")
+	(princ "в„– ")
 	(princ kadr)
 	(princ ": ")
 	(princ info)
@@ -65,7 +65,7 @@
 )
 
 
-; 	вытягивание из слова только цыфры
+; 	РІС‹С‚СЏРіРёРІР°РЅРёРµ РёР· СЃР»РѕРІР° С‚РѕР»СЊРєРѕ С†С‹С„СЂС‹
 (defun get_number(word / _last 	_i 	_mod 	_res _first)
 	(setq _last (-  (strlen word) 1))
 	(setq _first 0)
@@ -109,7 +109,7 @@
 	(setq _res _res)
 )
 
-;		есть ли символ в строке
+;		РµСЃС‚СЊ Р»Рё СЃРёРјРІРѕР» РІ СЃС‚СЂРѕРєРµ
 (defun char_in_str (text  char / _tmp	 _res)
 	(setq _res nil)
 	(setq _i 1)
@@ -123,15 +123,15 @@
 	(setq _res _res)
 )
 
-;		отрисовка точки
+;		РѕС‚СЂРёСЃРѕРІРєР° С‚РѕС‡РєРё
 (defun draw_point(koords)
 	(command "_color" GK_COLOR_F)
 	(command "_point" (list (/ (car koords	) 2) (last koords)))
 	(setq GK_LAST_POINT (list (/ (car koords	) 2) (last koords)))
 )
 
-;		отрисовка линии	
-;		ось, координаты(последней точки в линии), тип(сплошная или штриховая)
+;		РѕС‚СЂРёСЃРѕРІРєР° Р»РёРЅРёРё	
+;		РѕСЃСЊ, РєРѕРѕСЂРґРёРЅР°С‚С‹(РїРѕСЃР»РµРґРЅРµР№ С‚РѕС‡РєРё РІ Р»РёРЅРёРё), С‚РёРї(СЃРїР»РѕС€РЅР°СЏ РёР»Рё С€С‚СЂРёС…РѕРІР°СЏ)
 (defun draw_line(axis koords type / _tmp)
 	(if (= type "axeled")
 		(command "_color" 132)
@@ -193,7 +193,7 @@
 )
 
 
-;		отрисовка дуги
+;		РѕС‚СЂРёСЃРѕРІРєР° РґСѓРіРё
 (defun draw_arc(axis p last_point direction  /   koords		_tmp)
 	(command "_color" 5)
 	(setq koords last_point)
@@ -283,5 +283,5 @@
 )
 
 (defun draw_trapezoid(last_point p2 direction)
-	(princ "Отрисовка трапеции пока невозможна")
+	(princ "РћС‚СЂРёСЃРѕРІРєР° С‚СЂР°РїРµС†РёРё РїРѕРєР° РЅРµРІРѕР·РјРѕР¶РЅР°")
 )
