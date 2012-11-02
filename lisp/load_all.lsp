@@ -1,12 +1,13 @@
 ;
 ;###################################################################################
-;	AutoCAD 2007 + AutoLISP + Visual LISP
+;	AutoLISP
+;
 ;###################################################################################
 ;	Герасев Кирилл
 ;	29/08/2012
 ;###################################################################################
 ;
-(load "c:/gk_autocad/cnc_fanuc_simple")
-(load "c:/gk_autocad/nc31")
-(load "c:/gk_autocad/verify")
-(load "c:/gk_autocad/wrappers")
+(load "cnc_fanuc_simple")
+(load "nc31")
+(load "verify")
+(load "wrappers")

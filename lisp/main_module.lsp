@@ -1,6 +1,6 @@
 ;
 ;###################################################################################
-;	AutoCAD 2007 + AutoLISP + Visual LISP
+;	AutoLISP
 ;	Модуль для программ
 ;	Перебор точек, сохранение в таблицы, сохранение в файлы и т.д.
 ;	Для токарных станков с повернутой системой координат X/2-Z.
@@ -14,19 +14,6 @@
 ;###################################################################################
 ;	Герасев Кирилл
 ;	25/04/2012
-;###################################################################################
-;		 ФУНКЦИИ МОДУЛЯ:
-;
-;		 find_real_coord ( list_of_coord  acad_axis ) => list_of_coord
-;		 revers_order_of_coord( list_of_coord ) => list_of_coord
-;		 mk_difference ( list_of_coord ) => list_of_coord 
-;		 bubltoarc ( pt1 pt2 bubl ) => ( cnt r (angle cnt pt1) (angle cnt pt2) )
-;		 debug (text debug_info)
-; 		 draw_point_and_text ( list_of_coord ) 
-;  		 print_to_table( list_of_coord title acad_axis )
-;		 coord_to_string( n_t ) => ( string )
-;
-
 ;###################################################################################
 ; общее для всех программ
 ;
@@ -165,7 +152,7 @@
 			(polar pt1 (angle pt1 pt2) (/ dst 2.0))
 			(- (angle pt1 pt2) (/ pi 2.0))
 			(- (* (/ dst 2.0) bubl) r))
-	);end of setq
+	)
 	(list cnt r (angle cnt pt1) (angle cnt pt2))
   ;точки центра дуги, радиус, начального угла дуги, конечного угла дуги
 )
@@ -195,13 +182,9 @@
 
 (defun get_date ( / d yr mo day) ; получение даты
      (setq d (rtos (getvar "CDATE") 2 6)
-	 
           yr (substr d 3 2)
-		  
           mo (substr d 5 2)
-		  
          day (substr d 7 2)
-		 
      )
      (strcat day "." mo "." yr)
 )
@@ -209,7 +192,7 @@
 (defun get_all_info( / _operation _modification _name   _full_path _res _res1)
 	; получение информации из иерархии папок. стуктура расположения проекта должна быть:
 	;root/Имя_детали/Номер_детали_и_номер_изделия/Операция
-	;FIXME: 	подумать на счет изменения структуры расположения файлов
+	;TODO: 	подумать на счет изменения структуры расположения файлов
 	(setq _full_path (GETVAR "dwgprefix"))
 	(setq _operation (get_last_folder _full_path))
 	(setq _modification (get_last_folder (last _operation)))
@@ -295,9 +278,9 @@
 	(draw_point_and_text 	_lst_point 	 acad_axis   index)
 	(setq _rev_order 0)
 	(setq answ (getstring "\nСделать обратный порядок точек? <Д/Н>"))
-	(if ( OR ( = answ "Д" ) ( = answ "д" ) )
+	(if ( OR ( = answ "y" ) ( = answ "д" ) )
 		(progn
-			(command "ОТМЕНИТЬ"  1)
+			(command "_undo"  1)
 			(setq _lst_point (revers_order_of_coord _lst_point))
 			(draw_point_and_text _lst_point		acad_axis   index)
 			(setq _rev_order 1)
@@ -358,7 +341,7 @@
 		(setq _angle_of_text 0)
 	)
 	(foreach _tmp list_of_coord
-		(command "КРУГ" (list (car _tmp) (nth 1 _tmp)) radius)
+		(command "_circle" (list (car _tmp) (nth 1 _tmp)) radius)
 		(command "_text" (polar (list (car _tmp) (nth 1 _tmp)) (/ pi 4) 2) _angle_of_text (rtos _n 2))
 		(setq _n (1+ _n))
 		(cond 
@@ -397,7 +380,7 @@
 )
 
 (defun round (var to / _res)
-		; функция округления
+		; функция о_circleления
 		; почему ее сделал не помню%)
 		(setq _res (rtos var 2 to ))
 		(setq _res (atof _res))
@@ -539,7 +522,7 @@
 	(init_excel)
 	(if (= number 0)
 		(progn
-				(setq _dcl_file "c:/gk_autocad/gk_excel.dcl")
+				(setq _dcl_file "gk_excel.dcl")
 				(setq _dcl_id (load_dialog _dcl_file))
 				(if (not (new_dialog "number_cp" _dcl_id))
 					(exit)

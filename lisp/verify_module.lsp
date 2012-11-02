@@ -12,7 +12,7 @@
 
 ;		чтение из файла
 ; 		возвращение в виде списка
-(load "c:/gk_autocad/main_module")
+(load "main_module")
 (setq GK_COLOR_F 6)
 
 (defun read_from_txt( / _l  _program  _f _res)

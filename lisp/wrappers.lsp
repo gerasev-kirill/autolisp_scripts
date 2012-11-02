@@ -8,12 +8,11 @@
 ;	24/05/2012
 ;###################################################################################
 ;
-(load "C:/gk_autocad/main_module")
+(load "main_module")
 
 (defun c:gk-open-cnc ( / _yp)
-	(setq _f (get_dwg_name))
-	(setq _yp (strcat (nth 1 _f) (nth 0 _f) "\\УП.txt") )
-	(command "_shell" (strcat "gvim \"" _yp  "\"" ))
+	(setq _yp (strcat (GETVAR "dwgprefix") "\\УП.txt") )
+	(command "_shell" (strcat "gvim \"" _yp  "\" &" ))
 )
 
 (defun c:gk-mk-nc31-program()
@@ -22,7 +21,7 @@
 	(setvar "osmode" 0)
 	(setvar "cmdecho" 0)
 	;;;;;;;
-        (command "_shell" "cd C:\\eclipse_progects\\ProgMaker\\interface && c:\\python26\\python2.exe C:\\eclipse_progects\\ProgMaker\\interface\\make_program.py")  
+    (command "_shell" "cd C:\\eclipse_progects\\ProgMaker\\interface && c:\\python26\\python2.exe C:\\eclipse_progects\\ProgMaker\\interface\\make_program.py")  
 	;;;;;;;
 	(mapcar 'setvar '("osmode" "cmdecho") _sys_var)
 	(princ)
