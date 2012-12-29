@@ -373,7 +373,7 @@
 ; функции доступные из коммандной строки AutoCAD
 
 (defun C:GK-NC31-PREF( / _dcl_id _dcl_file) ; настройка УП на вывод в файл
-	(setq _dcl_file "gk_dialog.dcl")
+	(setq _dcl_file "c:/gk_autocad/gk_dialog.dcl")
 	(setq _dcl_id (load_dialog _dcl_file))
 	(if (not (new_dialog "gk_nc31_dialog" _dcl_id))
 		(exit)
@@ -429,7 +429,7 @@
 	(setq answ (getstring "\nСделать обратный порядок точек? <Д/Н>"))
 	(if ( OR ( = answ "д" ) ( = answ "y" ) )
 		(progn
-			(command "_undo"  1)
+			(command "ОТМЕНИТЬ"  1)
 			(setq _tmp_print (revers_order_of_coord _tmp_print))
 			(draw_circle_and_text  _tmp_print 	_r _index 	"x/2-z" _side)
 			(setq gk_rev 1)
@@ -502,7 +502,6 @@
 		(setq index (+ index (LENGTH _tmp)))
 	)
 	(print_to_table _tmp_print "Абсолютные значения" "x/2-z" 1) 
-	(princ)
 	(print_to_clipboard _G_code 0)
 	(princ)
 )
@@ -522,16 +521,16 @@
 	(setq lst_point_dif (mk_difference lst_point))
 	(print_to_table lst_point_dif "Относительные значения" "x/2-z" 1) 
 	(setq _answ (getstring "\nОтстроить G-код в абсолютных значениях? <Д/Н>"))
-	(if (or (= _answ "y") ( = _answ "д"))
+	(if (or (= _answ "Д") ( = _answ "д"))
 		(progn
 			(setq GK_ABSOLUTE 1)
 			(setq myl (print_to_G_code  lst_point   gk_rev))
-			(print_to_clipboard myl)
+			(print_to_clipboard myl 0)
 		)
 		(progn
 			(setq GK_ABSOLUTE 0)
 			(setq myl (print_to_G_code  lst_point_dif   gk_rev))
-			(print_to_clipboard myl )
+			(print_to_clipboard myl 0)
 		)
 	
 	)

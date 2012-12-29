@@ -189,12 +189,12 @@
 			(command "_rectang"  GK_LAST_POINT (list (car _tmp) (+ (nth 1 GK_LAST_POINT) GK_B)))
 		)
 	)
-	(setq GK_LAST_POINT (list (car GK_LAST_POINT) (nth 1 _tmp)))
+	;(setq GK_LAST_POINT (list (car GK_LAST_POINT) (nth 1 _tmp)))
 )
 
 
 ;		отрисовка дуги
-(defun draw_arc(axis p last_point direction  /   koords		_tmp)
+(defun draw_arc(axis p last_point direction  /   koords	_p1 _p2	_tmp)
 	(command "_color" 5)
 	(setq koords last_point)
 	(if (/= axis "NONE")

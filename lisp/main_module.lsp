@@ -1,6 +1,6 @@
 ;
 ;###################################################################################
-;	AutoLISP
+;	AutoCAD 2007 + AutoLISP + Visual LISP
 ;	Модуль для программ
 ;	Перебор точек, сохранение в таблицы, сохранение в файлы и т.д.
 ;	Для токарных станков с повернутой системой координат X/2-Z.
@@ -14,6 +14,19 @@
 ;###################################################################################
 ;	Герасев Кирилл
 ;	25/04/2012
+;###################################################################################
+;		 ФУНКЦИИ МОДУЛЯ:
+;
+;		 find_real_coord ( list_of_coord  acad_axis ) => list_of_coord
+;		 revers_order_of_coord( list_of_coord ) => list_of_coord
+;		 mk_difference ( list_of_coord ) => list_of_coord 
+;		 bubltoarc ( pt1 pt2 bubl ) => ( cnt r (angle cnt pt1) (angle cnt pt2) )
+;		 debug (text debug_info)
+; 		 draw_point_and_text ( list_of_coord ) 
+;  		 print_to_table( list_of_coord title acad_axis )
+;		 coord_to_string( n_t ) => ( string )
+;
+
 ;###################################################################################
 ; общее для всех программ
 ;
@@ -152,7 +165,7 @@
 			(polar pt1 (angle pt1 pt2) (/ dst 2.0))
 			(- (angle pt1 pt2) (/ pi 2.0))
 			(- (* (/ dst 2.0) bubl) r))
-	)
+	);end of setq
 	(list cnt r (angle cnt pt1) (angle cnt pt2))
   ;точки центра дуги, радиус, начального угла дуги, конечного угла дуги
 )
@@ -182,9 +195,13 @@
 
 (defun get_date ( / d yr mo day) ; получение даты
      (setq d (rtos (getvar "CDATE") 2 6)
+	 
           yr (substr d 3 2)
+		  
           mo (substr d 5 2)
+		  
          day (substr d 7 2)
+		 
      )
      (strcat day "." mo "." yr)
 )
@@ -192,7 +209,7 @@
 (defun get_all_info( / _operation _modification _name   _full_path _res _res1)
 	; получение информации из иерархии папок. стуктура расположения проекта должна быть:
 	;root/Имя_детали/Номер_детали_и_номер_изделия/Операция
-	;TODO: 	подумать на счет изменения структуры расположения файлов
+	;FIXME: 	подумать на счет изменения структуры расположения файлов
 	(setq _full_path (GETVAR "dwgprefix"))
 	(setq _operation (get_last_folder _full_path))
 	(setq _modification (get_last_folder (last _operation)))
@@ -278,7 +295,7 @@
 	(draw_point_and_text 	_lst_point 	 acad_axis   index)
 	(setq _rev_order 0)
 	(setq answ (getstring "\nСделать обратный порядок точек? <Д/Н>"))
-	(if ( OR ( = answ "y" ) ( = answ "д" ) )
+	(if ( OR ( = answ "Д" ) ( = answ "д" ) )
 		(progn
 			(command "_undo"  1)
 			(setq _lst_point (revers_order_of_coord _lst_point))
@@ -341,7 +358,7 @@
 		(setq _angle_of_text 0)
 	)
 	(foreach _tmp list_of_coord
-		(command "_circle" (list (car _tmp) (nth 1 _tmp)) radius)
+		(command "CIRCLE" (list (car _tmp) (nth 1 _tmp)) radius)
 		(command "_text" (polar (list (car _tmp) (nth 1 _tmp)) (/ pi 4) 2) _angle_of_text (rtos _n 2))
 		(setq _n (1+ _n))
 		(cond 
@@ -380,7 +397,7 @@
 )
 
 (defun round (var to / _res)
-		; функция о_circleления
+		; функция округления
 		; почему ее сделал не помню%)
 		(setq _res (rtos var 2 to ))
 		(setq _res (atof _res))
@@ -412,7 +429,7 @@
                     (+ (* _font_size 2) 5)
 					))
 	(vla-setText mytable 0 0 title)
-	(vla-setText mytable 1 0 "№ точки")
+	(vla-setText mytable 1 0 "№")
 	(vla-setText mytable 1 1 "Х")
 	(if (or (= acad_axis "x/2-z" )  (= acad_axis "x/2-z-spesial" ))
 		(vla-setText mytable 1 2 "Z")
@@ -522,7 +539,7 @@
 	(init_excel)
 	(if (= number 0)
 		(progn
-				(setq _dcl_file "gk_excel.dcl")
+				(setq _dcl_file "c:/gk_autocad/gk_excel.dcl")
 				(setq _dcl_id (load_dialog _dcl_file))
 				(if (not (new_dialog "number_cp" _dcl_id))
 					(exit)
@@ -562,6 +579,78 @@
 ;###################################################################################
 ; функции работы с G -кодами	(общие)
 ; преобразование в строки
+(defun C:get_table_context(/ _n _program_text obj _i _kord  _k  _inkremZ)
+	(setq _program_text nil)
+	(vl-load-com)
+	(while (setq obj (car (entsel)))
+		(progn
+			(setq obj (vlax-ename->vla-object obj))
+			(if (= (vla-get-ObjectName obj) "AcDbTable")
+				(progn
+					(setq _i 2)
+					(setq _kord nil)
+					(setq _inkremZ (getint "Введите р-р Z <-2>"))
+					(while (< _i (vla-get-rows obj))
+						(setq _x (atof (vla-GetText obj _i  1)))
+						(setq _z (atof (vla-GetText obj _i 2)))
+						(setq _kord (append _kord  (list (list _x _z) )))
+						(setq _i (+ _i 1))
+					)
+					(setq _program_text (append _program_text (list (list (strcat "Z-" (ctsn33 (abs _inkremZ)))))))
+					(setq _n 0)
+					(while (< _n (LENGTH _kord ))
+						(setq _k (nth _n _kord))
+						(if (/= 0 (nth 0 _k))
+						(progn
+							(setq _x (nth 0 _k))
+							(if (> _x 0)
+								(setq _x (strcat "+" (ctsn33 _x)))
+								(setq _x (strcat "-" (ctsn33 (abs _x))))
+							)
+							(setq _x (strcat "X" _x))
+							)
+							(setq _x 0)
+						)
+						(if (/= 0 (nth 1 _k))
+						(progn
+							(setq _y (nth 1 _k))
+							(if (> _y 0)
+								(setq _y (strcat "+" (ctsn33 _y)))
+								(setq _y (strcat "-" (ctsn33 (abs _y))))
+							)
+							(setq _y (strcat "Y" _y))
+							)
+							(setq _y 0)
+						)
+						(setq _n (+ 1 _n))
+						(if (and (/= _x 0) (/= _y 0))
+							(setq _program_text (append _program_text (list(list _x _y))))
+							(progn
+								(if (/= _x 0)
+									(setq _program_text (append _program_text (list (list _x))))
+								)
+								(if (/= 0 _y)
+									(setq _program_text (append _program_text (list (list _y))))
+								)
+							)
+						)
+						
+						)
+					)
+					)
+  (princ _program_text)
+  	(setq _string "")
+	(foreach _tmp2 _program_text
+		(setq _tmp4 "NNNN")
+		(foreach _tmp3 _tmp2
+			(setq _tmp4 (strcat _tmp4 _tmp3))
+		)
+		(setq _string (strcat _string _tmp4 "\n"))
+	)
+	(setClipText _string)
+	)
+)
+)
 
 
 ; лучше эти функции не трогать(!), они держатся на МАГИИ
@@ -588,6 +677,20 @@
 			)
 		)
 	)
+  
+ (defun ctsn33(n_t / _res _part)
+	(setq _res (coord_to_string n_t))
+	(setq _res (strcat "0" _res))
+	(princ _res)
+	(princ "\n")
+	(setq _res (substr _res 1 (- (strlen _res) 1)))
+	(setq __i (strlen _res))
+	(while (< __i 6)
+		(setq _res (strcat "0" _res))
+		(setq __i (+ __i 1))
+	)
+	(setq _res _res)
+ )
   
 (defun coord_to_string( n_t / _result _res part) ; преобразование числа в строку
 	; формат: 	89.09756 => "89097"
