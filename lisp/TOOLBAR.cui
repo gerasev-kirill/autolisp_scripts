@@ -1,0 +1,250 @@
+<?xml version="1.0"?>
+<!--
+Внимание! Не изменяйте содержимое этого файла.
+При попытке редактирования этого файла с помощью редактора XML возможна потеря адаптации и функций миграции.
+Если требуется изменить информацию в файле адаптации, используйте диалоговое окно "Настройка интерфейса пользователя" в продукте.
+Чтобы открыть диалоговое окно "Настройка интерфейса пользователя", щелкните меню "Сервис" > "Адаптация" > "Интерфейс" или введите НПИ в командной строке. 
+-->
+<CustSection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <FileVersion MajorVersion="0" MinorVersion="3" IncrementalVersion="2" UserVersion="1" />
+  <Header>
+    <CommonConfiguration>
+      <CommonItems>
+        <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+      </CommonItems>
+    </CommonConfiguration>
+    <WorkspaceRoot>
+      <WorkspaceConfigRoot />
+    </WorkspaceRoot>
+  </Header>
+  <MenuGroup Name="GK-MAKE">
+    <MacroGroup Name="GK-MAKEMacros">
+      <MenuMacro UID="MMU_0002">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0002">РЕГЕН</Name>
+          <Command>^C^C(command "РЕГЕН"); </Command>
+          <SmallImage Name="RCDATA_16_WINCAS" />
+          <LargeImage Name="RCDATA_16_WINCAS" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0004">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0004">ПОЛРЕД</Name>
+          <Command>^C^C(command "ПОЛРЕД"); </Command>
+          <SmallImage Name="RCDATA_16_PEDIT" />
+          <LargeImage Name="RCDATA_16_PEDIT" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0006">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0006">Отобр. точек</Name>
+          <Command>^C^C^C^C(command "_ddptype"); </Command>
+          <SmallImage Name="RCDATA_16_OSNNOD" />
+          <LargeImage Name="RCDATA_16_OSNNOD " />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0008">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0008">GK-NC31-POLY</Name>
+          <Command>^C^C^C^C(if (null C:gk-nc31-poly)(load "c:/gk_autocad/load_all"));gk-nc31-poly; </Command>
+          <SmallImage Name="GK-NC31-POLY.bmp" />
+          <LargeImage Name="GK-NC31-POLY.bmp" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0010">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0010">GK-NC31-MULTI-POLY</Name>
+          <Command>^C^C^C^C(if (null C:gk-nc31-multi-poly)(load "c:/gk_autocad/load_all"));gk-nc31-multi-poly; </Command>
+          <SmallImage Name="GK-NC31-MULTI-POLY.bmp" />
+          <LargeImage Name="GK-NC31-MULTI-POLY.bmp" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0012">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0012">GK-NC31-MULTI-POLY-SPESIAL</Name>
+          <Command>^C^C^C^C(if (null C:gk-nc31-multi-poly-spesial)(load "c:/gk_autocad/load_all"));gk-nc31-poly-spesial; </Command>
+          <SmallImage Name="GK-NC31-MULTI-POLY-SPESIAL.bmp" />
+          <LargeImage Name="GK-NC31-MULTI-POLY-SPESIAL.bmp" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0014">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0014">GK-NC31-CONVERT-TABLE</Name>
+          <Command>^C^C^C^C(if (null C:gk-nc31-convert-table)(load "c:/gk_autocad/load_all"));gk-nc31-convert-table; </Command>
+          <SmallImage Name="GK-NC31-CONVERT-TABLE.bmp" />
+          <LargeImage Name="GK-NC31-CONVERT-TABLE.bmp" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0016">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0016">GK-NC31-MAKE-CHART</Name>
+          <Command>^C^C^C^C(if (null C:gk-nc31-MAKE-CHART)(load "c:/gk_autocad/load_all"));gk-nc31-MAKE-CHART; </Command>
+          <SmallImage Name="GK-NC31-MAKE-CHART.bmp" />
+          <LargeImage Name="GK-NC31-MAKE-CHART.bmp" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0018">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0018">GK-CNC-POLY</Name>
+          <Command>^C^C^C^C(if (null C:gk-CNC-poly)(load "c:/gk_autocad/load_all"));gk-CNC-poly; </Command>
+          <SmallImage Name="GK-CNC-POLY.bmp" />
+          <LargeImage Name="GK-CNC-POLY.bmp" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0020">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0020">GK-CNC-MULTI-POLY</Name>
+          <Command>^C^C^C^C(if (null C:gk-CNC-multi-poly)(load "c:/gk_autocad/load_all"));gk-CNC-poly; </Command>
+          <SmallImage Name="GK-CNC-MULTI-POLY.bmp" />
+          <LargeImage Name="GK-CNC-MULTI-POLY.bmp" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0022">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0022">GK-CNC-CONVERT-TABLE</Name>
+          <Command>^C^C^C^C(if (null C:gk-CNC-convert-table)(load "c:/gk_autocad/load_all"));gk-CNC-convert-table; </Command>
+          <SmallImage Name="GK-CNC-CONVERT-TABLE.bmp" />
+          <LargeImage Name="GK-CNC-CONVERT-TABLE.bmp" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0024">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0024">GK-CNC-MAKE-CHART</Name>
+          <Command>^C^C^C^C(if (null C:gk-CNC-MAKE-CHART)(load "c:/gk_autocad/load_all"));gk-CNC-MAKE-CHART; </Command>
+          <SmallImage Name="GK-CNC-MAKE-CHART.bmp" />
+          <LargeImage Name="GK-CNC-MAKE-CHART.bmp" />
+        </Macro>
+      </MenuMacro>
+    </MacroGroup>
+    <MenuRoot>
+      <AcceleratorRoot />
+      <OverrideRoot />
+      <MouseButtonRoot />
+      <DigitizerButtonRoot />
+      <PopMenuRoot />
+      <ToolbarRoot>
+        <Toolbar ToolbarOrient="floating" ToolbarVisible="show" xval="742" yval="121" rows="1" UID="TBU_0002">
+          <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          <Alias>TB_GK-OTHER</Alias>
+          <Alias>GK-MAKE</Alias>
+          <Name xlate="true" UID="XLS_0001">GK-MAKE</Name>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0001">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0003">РЕГЕН</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0002" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0002">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0005">ПОЛРЕД</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0004" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0003">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0007">Отобр. точек</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0006" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="true" UID="TBBU_0013">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0004">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0009">GK-NC31-POLY</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0008" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0005">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0011">GK-NC31-MULTI-POLY</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0010" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0006">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0013">GK-NC31-MULTI-POLY-SPESIAL</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0012" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0007">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0015">GK-NC31-CONVERT-TABLE</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0014" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0008">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0017">GK-NC31-MAKE-CHART</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0016" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0009">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0019">GK-CNC-POLY</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0018" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0010">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0021">GK-CNC-MULTI-POLY</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0020" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0011">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0023">GK-CNC-CONVERT-TABLE</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0022" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0012">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0025">GK-CNC-MAKE-CHART</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0024" />
+            </MenuItem>
+          </ToolbarButton>
+        </Toolbar>
+      </ToolbarRoot>
+      <ScreenMenuRoot />
+      <ImageMenuRoot />
+      <TabletMenuRoot />
+      <DoubleClickRoot />
+    </MenuRoot>
+  </MenuGroup>
+</CustSection>

@@ -1,0 +1,33 @@
+;;;note:replace items in italic with your own names
+***MENUGROUP=GK
+***TOOLBARS
+**TB_GK-OTHER
+[_Toolbar(GK-MAIN ,_Floating,_Show,742,121,1)]
+[_Button(пецем ,RCDATA_16_WINCAS,RCDATA_16_WINCAS)]^C^C(command "пецем");
+[_Button(онкпед ,RCDATA_16_PEDIT,RCDATA_16_PEDIT)]^C^C(command "онкпед");
+[_Button(нРНАП. РНВЕЙ ,RCDATA_16_OSNNOD,RCDATA_16_OSNNOD )]^C^C^C^C(command "_ddptype");
+[_Button(GK-NC31-POLY ,GK-NC31-POLY.bmp,GK-NC31-POLY.bmp)]^C^C^C^C(if (null C:gk-nc31-poly)(load "c:/gk_autocad/load_all"));gk-nc31-poly;
+[_Button(GK-NC31-MULTI-POLY ,GK-NC31-MULTI-POLY.bmp,GK-NC31-MULTI-POLY.bmp)]^C^C^C^C(if (null C:gk-nc31-multi-poly)(load "c:/gk_autocad/load_all"));gk-nc31-multi-poly;
+[_Button(GK-NC31-MULTI-POLY-SPESIAL ,GK-NC31-MULTI-POLY-SPESIAL.bmp,GK-NC31-MULTI-POLY-SPESIAL.bmp)]^C^C^C^C(if (null C:gk-nc31-multi-poly-spesial)(load "c:/gk_autocad/load_all"));gk-nc31-poly-spesial;
+[_Button(GK-NC31-CONVERT-TABLE ,GK-NC31-CONVERT-TABLE.bmp,GK-NC31-CONVERT-TABLE.bmp)]^C^C^C^C(if (null C:gk-nc31-convert-table)(load "c:/gk_autocad/load_all"));gk-nc31-convert-table;
+[_Button(GK-NC31-MAKE-CHART ,GK-NC31-MAKE-CHART.bmp,GK-NC31-MAKE-CHART.bmp)]^C^C^C^C(if (null C:gk-nc31-MAKE-CHART)(load "c:/gk_autocad/load_all"));gk-nc31-MAKE-CHART;
+[_Button(GK-CNC-POLY ,GK-CNC-POLY.bmp,GK-CNC-POLY.bmp)]^C^C^C^C(if (null C:gk-CNC-poly)(load "c:/gk_autocad/load_all"));gk-CNC-poly;
+[_Button(GK-CNC-MULTI-POLY ,GK-CNC-MULTI-POLY.bmp,GK-CNC-MULTI-POLY.bmp)]^C^C^C^C(if (null C:gk-CNC-multi-poly)(load "c:/gk_autocad/load_all"));gk-CNC-poly;
+[_Button(GK-CNC-CONVERT-TABLE ,GK-CNC-CONVERT-TABLE.bmp,GK-CNC-CONVERT-TABLE.bmp)]^C^C^C^C(if (null C:gk-CNC-convert-table)(load "c:/gk_autocad/load_all"));gk-CNC-convert-table;
+[_Button(GK-CNC-MAKE-CHART ,GK-CNC-MAKE-CHART.bmp,GK-CNC-MAKE-CHART.bmp)]^C^C^C^C(if (null C:gk-CNC-MAKE-CHART)(load "c:/gk_autocad/load_all"));gk-CNC-MAKE-CHART;
+
+
+
+**TB_GK-OTHER
+[_Toolbar(GK-VERIFY ,_Floating,_Show,600,120,1)]
+[_Button(gk-open-cnc ,gk-open-cnc.bmp,gk-open-cnc.bmp)]^C^C^C^C(if (null C:gk-open-cnc)(load "c:/gk_autocad/load_all"));gk-open-cnc;
+[_Button(GK-NC31-VERIFY-FROM-TXT,GK-NC31-VERIFY-FROM-TXT.bmp,GK-NC31-VERIFY-FROM-TXT.bmp)]^C^C^C^C(if (null C:GK-NC31-VERIFY-FROM-TXT)(load "c:/gk_autocad/load_all"));GK-NC31-VERIFY-FROM-TXT;
+[_Button(gk-mk-nc31-program ,gk-mk-nc31-program.bmp,gk-mk-nc31-program.bmp)]^C^C^C^C(if (null C:gk-mk-nc31-program)(load "c:/gk_autocad/load_all"));gk-mk-nc31-program;
+
+
+**TB_GK-OTHER
+[_Toolbar(GK-DRAW ,_Floating,_Show,700,120,1)]
+[_Button(GK-LINE ,GK-LINE.bmp,GK-LINE.bmp)]^C^C^C^C(if (null C:gk-line)(load "c:/gk_autocad/load_all"));gk-line
+[_Button(gk-offset ,gk-offset.bmp,gk-offset.bmp)]^C^C^C^C(if (null C:gk-offset)(load "c:/gk_autocad/load_all"));gk-offset;
+
+
