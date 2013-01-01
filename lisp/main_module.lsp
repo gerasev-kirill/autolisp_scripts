@@ -1,6 +1,4 @@
-;
 ;###################################################################################
-;	AutoCAD 2007 + AutoLISP + Visual LISP
 ;	Модуль для программ
 ;	Перебор точек, сохранение в таблицы, сохранение в файлы и т.д.
 ;	Для токарных станков с повернутой системой координат X/2-Z.
@@ -8,9 +6,9 @@
 ;###################################################################################
 ;	Переменная для опеределения расположения координатных осей:
 ;	acad_asix = {	
-;							"x/2-z" 	- для токарных станков		
-;							"x-z"		-  для фрезерных и остальных
-;							}
+;			"x/2-z" 	- для токарных станков		
+;			"x-z"		-  для фрезерных и остальных
+;			}
 ;###################################################################################
 ;	Герасев Кирилл
 ;	25/04/2012
@@ -485,44 +483,44 @@
 	(setq _res (+ 4 number))
 	(cond 
 		(( and (> number -1 ) (< number 20))
-					(setq _res (strcat "B" (itoa
-												(+ 4 number)	
-											)))
+			(setq _res (strcat "B" (itoa
+					(+ 4 number)	
+			)))
 		)
 		(( and (> number 19 ) (< number 40))
-					(setq _res (strcat "E" (itoa
-												(+ 4 (- number 20))
-											)))
+			(setq _res (strcat "E" (itoa
+					(+ 4 (- number 20))
+			)))
 		)
 		(( and (> number 39 ) (< number 60))
-					(setq _res (strcat "G" (itoa
-												(+ 4 (- number 40))
-											)))
+			(setq _res (strcat "G" (itoa
+					(+ 4 (- number 40))
+			)))
 		)
 		(( and (> number 59 ) (< number 80))
-					(setq _res (strcat "I" (itoa
-												(+ 4 (- number 60))
-											)))
+			(setq _res (strcat "I" (itoa
+					(+ 4 (- number 60))
+			)))
 		)
 		(( and (> number 79 ) (< number 100))
-					(setq _res (strcat "K" (itoa
-													(+ 4 (- number 80))
-											)))
+			(setq _res (strcat "K" (itoa
+					(+ 4 (- number 80))
+			)))
 		)
 		(( and (> number 99 ) (< number 120))
-					(setq _res (strcat "M" (itoa
-													(+ 4 (- number 100))
-											)))
+			(setq _res (strcat "M" (itoa
+					(+ 4 (- number 100))
+			)))
 		)
 		(( and (> number 119 ) (< number 139))
-					(setq _res (strcat "O" (itoa
-													(+ 4 (- number 120))
-											)))
+			(setq _res (strcat "O" (itoa
+					(+ 4 (- number 120))
+			)))
 		)
 		(( and (> number 140 ) (< number 150))
-					(setq _res (strcat "Q" (itoa
-													(+ 4 (- number 140))
-											)))
+			(setq _res (strcat "Q" (itoa
+					(+ 4 (- number 140))
+			)))
 		)
 	)
 )
